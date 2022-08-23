@@ -102,12 +102,14 @@ def found_word_in_list(listwords, *args):
             break
 
 def new_game_func(): # начинает заново
-        while True:
+    while True:
+        yes_answers = ['ДА', 'Да', 'да', 'LF', 'Lf', 'lf', '+']
+        no_answers = ['НЕТ', 'Нет', 'нет', 'YTN', 'Ytn', 'ytn', '-']
         answer = input('Начать новую игру?: ')
-        if answer == 'Да' or answer == 'да' or answer == 'lf' or answer == 'LF' or answer == '+':
+        if answer in yes_answers:
             start()
             break
-        if answer == 'Нет' or answer == 'нет' or answer == 'ytn' or answer == '-':
+        if answer in no_answers:
             print('До скорых встреч!')
             break
         else:
