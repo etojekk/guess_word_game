@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float
 
-from fastapy_word_parser.new_create_test.db.database import  base
+from db.database import  base
 
 
 

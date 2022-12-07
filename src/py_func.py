@@ -1,6 +1,7 @@
 import random
 import time
-from fastapy_word_parser.new_create_test.db.db_functions import (random_word, found_word_args, found_len,
+
+from db.db_functions import (random_word, found_word_args, found_len,
                                     append_words_to_overlap, first_word, add_results, add_in_select_table,
                                      drop_table_FirstWord, drop_table_OverlapWords, drop_table_SelectWords)
 
@@ -53,6 +54,7 @@ def compare(userword, random_word):
 
 
 def start(len_word: int):
+    print('start in py_func')
     drop_table_FirstWord()
     drop_table_SelectWords()
     drop_table_OverlapWords()
@@ -61,5 +63,5 @@ def start(len_word: int):
     update_args(firstword)
 
 
-if __name__ == "__main__":
-    start(20)
+#if __name__ == "__main__":
+ #   start(20)

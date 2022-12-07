@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+
+  redis:
+    image: redis
+    restart: always
+    container_name: redis
+    networks:
+      - backend
+
+  words_game:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    # container_name: words_game
+    depends_on:
+      - celery
+      - postgres
+      - redis
+    networks:
+      - backend
+    # environment:
+    #   PORT: 8000
+    ports:
+      - 8000:8000
+    # restart: always
+    # command: uvicorn run_app:api --port 8000
+    volumes:
+        - ./go_app:/go_app/data
+
+  celery:
+      image: celery:latest
+      build:
+        context: .
+        dockerfile: celery.Dockerfile
+      container_name: celery_app
+      restart: always
+      depends_on:
+        - redis
+        - postgres
+      networks:
+        - backend
+      # ports:
+      # - 8000:8000
+      volumes:
+        - ./go_app:/go_app/celery
+      # command: celery -A tasks worker -l info
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    # hostname: pg
+    env_file: .env
+    networks:
+      - backend
+    environment:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+        - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+        - ./go_app/db_data:/var/lib/postgresql/data
+
+networks:
+  backend:
+      driver: bridge

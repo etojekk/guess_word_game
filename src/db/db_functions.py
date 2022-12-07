@@ -2,52 +2,48 @@ import random
 from sqlalchemy import *
 import sqlalchemy
 import time
+import os
 from sqlalchemy.sql.expression import func
-from fastapy_word_parser.new_create_test.db.database import session, engine, base
-from fastapy_word_parser.new_create_test.db.models import Words, OverlapWords, SelectWords, FirstWord, Results
+
+from db.database import session, engine, base
+from db.models import Words, OverlapWords, SelectWords, FirstWord, Results
 
 
 
-def append_words(filename): #добавление слов в общий список
-    try:
-        if not sqlalchemy.inspect(engine).has_table(Words):
-            base.metadata.tables["words"].create(bind = engine)
-    except:
-        pass
+def append_words(): #добавление слов в общий список
+    #try:
+    print(os.listdir())
+    print(os.getcwd())
+    if not sqlalchemy.inspect(engine).has_table(Words):
+        Words.__table__.create(bind=engine, checkfirst=True)
+        #base.metadata.tables['words'].create(bind = engine)
+        print(base.metadata.tables.values())
 
-    try:
-        with open (filename, 'r', encoding='utf-8') as f:
-            for i in f:
-                i = i.rstrip('\n')
-                word = Words(name = i)
-                session.add(word)
-                session.commit()
-    except:
+
+    #except:
+        ##pass
+
+    # try:
+    count = 1
+    with open ('./db/russian_nouns.txt', 'r', encoding='utf-8') as f:
+        for i in f:
+            i = i.rstrip('\n')
+            word = Words(name = i)
+            session.add(word)
+            session.commit()
+            print(f'word {i} did add')
+            print(count)
+            count+=1
+    # except:
         print('что то пошло не так append_words')
-    finally:
-        session.close()
-
-
-def append_word_to_select_table(word, overlap):
-    try:
-        if not sqlalchemy.inspect(engine).has_table(SelectWords):
-            base.metadata.tables["selectwords"].create(bind = engine)
-    except:
-        pass
-    try:
-        word = SelectWords(name = word, overlap = overlap)
-        session.add(word)
-        session.commit()
-    except:
-        print('ERROR')
-    finally:
+    # finally:
         session.close()
 
 
 def append_words_to_overlap(level: int):
     try:
         if not sqlalchemy.inspect(engine).has_table(OverlapWords):
-            base.metadata.tables["overlapwords"].create(bind = engine)
+            OverlapWords.__table__.create(bind=engine, checkfirst=True)
     except:
         pass
     try:
@@ -77,6 +73,13 @@ def drop_table_OverlapWords(): #удаление таблицы
         pass
 
 
+def drop_table_Words(): #удаление таблицы
+    try:
+        Words.__table__.drop(engine)
+    except:
+        pass
+
+
 def drop_table_SelectWords(): #удаление таблицы
     try:
         SelectWords.__table__.drop(engine)
@@ -84,9 +87,9 @@ def drop_table_SelectWords(): #удаление таблицы
         pass
 
 
-def drop_results_table(table_name):
+def drop_results_table():
     try:
-        table_name.__table__.drop(engine)
+        Results.__table__.drop(engine)
     except:
         pass
 
@@ -94,7 +97,7 @@ def drop_results_table(table_name):
 def first_word() -> str:
     try:
         if not sqlalchemy.inspect(engine).has_table(FirstWord):
-            base.metadata.tables["firstword"].create(bind = engine)
+            FirstWord.__table__.create(bind=engine, checkfirst=True)
     except:
         pass
 
@@ -116,10 +119,18 @@ def found_len():
         session.close()
 
 
+def found_len_words_table():
+    try:
+        len = session.query(func.count(Words.name)).scalar()
+        return len
+    finally:
+        session.close()
+
+
 def add_in_select_table(word, overlap):
     try:
         if not sqlalchemy.inspect(engine).has_table(SelectWords):
-            base.metadata.tables["selectwords"].create(bind = engine)
+            SelectWords.__table__.create(bind=engine, checkfirst=True)
     except:
         pass
 
@@ -152,7 +163,7 @@ def found_word_args(args: list):
 def add_results(randomword, finaltime, how_much):
     try:
         if not sqlalchemy.inspect(engine).has_table(Results):
-            base.metadata.tables["results"].create(bind = engine)
+            Results.__table__.create(bind=engine, checkfirst=True)
     except:
         pass
     print(randomword)
@@ -163,6 +174,20 @@ def add_results(randomword, finaltime, how_much):
         session.commit()
     finally:
         session.close()
+
+
+def list_results():
+    try:
+        words = session.query(Results).all()
+        x = []
+        for i in words:
+            x.append(f'name={i.name}, overlap={i.how_much}, timer={i.timer}')
+    except:
+        return False
+    else:
+        return x
+        
+    #return words
 
 
 def random_word():
@@ -176,7 +201,7 @@ def random_word():
         session.close()
 
 
-def found_len2():
+def found_len_words_table():
     try:
         len = session.query(func.count(Words.name)).scalar()
         return len
@@ -184,7 +209,8 @@ def found_len2():
         session.close()
 
 
-# append_words('russian_nouns.txt')
+#print(found_len_words_table)
+# append_words('app/db/russian_nouns.txt')
 # delete_table(OverlapWords)
 # append_words_to_overlap(5)
 # get_word(5)
@@ -195,3 +221,5 @@ def found_len2():
 # print(found_len2())
 
 # drop_results_table(Results)
+#drop_table_Words()
+#check_result()
