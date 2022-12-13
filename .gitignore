@@ -1,5 +1,6 @@
 test.py
 test2.py
 venv
-README
 __pycache__
+go_app
+.gitignore

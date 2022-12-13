@@ -1,5 +1,4 @@
 import random
-from sqlalchemy import *
 import sqlalchemy
 import time
 import os
@@ -9,21 +8,14 @@ from db.database import session, engine, base
 from db.models import Words, OverlapWords, SelectWords, FirstWord, Results
 
 
+def append_words():
+    try:
+        if not sqlalchemy.inspect(engine).has_table(Words):
+            Words.__table__.create(bind=engine, checkfirst=True)
+            print(base.metadata.tables.values())
+    except:
+        pass
 
-def append_words(): #добавление слов в общий список
-    #try:
-    print(os.listdir())
-    print(os.getcwd())
-    if not sqlalchemy.inspect(engine).has_table(Words):
-        Words.__table__.create(bind=engine, checkfirst=True)
-        #base.metadata.tables['words'].create(bind = engine)
-        print(base.metadata.tables.values())
-
-
-    #except:
-        ##pass
-
-    # try:
     count = 1
     with open ('./db/russian_nouns.txt', 'r', encoding='utf-8') as f:
         for i in f:
@@ -34,10 +26,6 @@ def append_words(): #добавление слов в общий список
             print(f'word {i} did add')
             print(count)
             count+=1
-    # except:
-        print('что то пошло не так append_words')
-    # finally:
-        session.close()
 
 
 def append_words_to_overlap(level: int):
@@ -59,28 +47,28 @@ def append_words_to_overlap(level: int):
         session.close()
 
 
-def drop_table_FirstWord(): #удаление таблицы
+def drop_table_FirstWord():
     try:
         FirstWord.__table__.drop(engine)
     except:
         pass
 
 
-def drop_table_OverlapWords(): #удаление таблицы
+def drop_table_OverlapWords():
     try:
         OverlapWords.__table__.drop(engine)
     except:
         pass
 
 
-def drop_table_Words(): #удаление таблицы
+def drop_table_Words():
     try:
         Words.__table__.drop(engine)
     except:
         pass
 
 
-def drop_table_SelectWords(): #удаление таблицы
+def drop_table_SelectWords():
     try:
         SelectWords.__table__.drop(engine)
     except:
@@ -152,7 +140,6 @@ def found_word_args(args: list):
     try:
         session.delete(word)
         session.commit()
-        # print(word.name + ' внутри функции аргс')
         return word.name
     except:
         pass
@@ -186,8 +173,6 @@ def list_results():
         return False
     else:
         return x
-        
-    #return words
 
 
 def random_word():
@@ -207,19 +192,3 @@ def found_len_words_table():
         return len
     finally:
         session.close()
-
-
-#print(found_len_words_table)
-# append_words('app/db/russian_nouns.txt')
-# delete_table(OverlapWords)
-# append_words_to_overlap(5)
-# get_word(5)
-# print(random_word())
-# compare('малолетка')
-# first_word()
-# found_word_args(['р', 'т', 'в', 'м', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'о'])
-# print(found_len2())
-
-# drop_results_table(Results)
-#drop_table_Words()
-#check_result()

@@ -61,7 +61,3 @@ def start(len_word: int):
     append_words_to_overlap(len_word)
     firstword = first_word()
     update_args(firstword)
-
-
-#if __name__ == "__main__":
- #   start(20)

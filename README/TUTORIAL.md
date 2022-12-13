@@ -1,7 +1,4 @@
-in file py_func.py need found start() and need write in it number, how much letters will in found words
-we have five tables in postgres:
-WORDS: list of words
-Overlap_words:list of words for compare with hidden word
-First_word:it's hidden word
-Select_word:all words which did select in last sourch
-Results:all hidden word which did found
+Than you start clone this project, write 'docker-compose up -d' you you terminal in 'guess_word_game' directory and you can check 0.0.0.0:8000 in you browser
+
+This program can guess to youself word and found it
+Results can show words which found before

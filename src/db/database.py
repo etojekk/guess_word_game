@@ -13,8 +13,6 @@ base = declarative_base()
 
 metadata = MetaData(engine)
 
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, echo=True)
-
 Session = sessionmaker(bind=engine)
 session = Session()
 

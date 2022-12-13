@@ -3,7 +3,6 @@ from sqlalchemy import Column, Integer, String, Float
 from db.database import  base
 
 
-
 class Words(base):
     __tablename__ = "words"
 
