@@ -1,4 +1,7 @@
-This program can guess to youself word and found it
-Results can show words which found before
+This project aims to implement a game, where an app randomly select a word and then consequently find it.
 
-To start you need to clone this project, run docker-compose, after that go to 0.0.0.0:8000
+To start you need to clone this project and run on terminal:
+
+`docker-compose up -d`
+
+After building app go to 0.0.0.0:8000
