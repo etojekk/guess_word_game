@@ -1,4 +1,4 @@
-This project aims to implement a game, where an app randomly select a word and then consequently find it.
+This project aims to implement a game, where an app randomly selects a word and then consequently finds it.
 
 To start you need to clone this project and run on terminal:
 
