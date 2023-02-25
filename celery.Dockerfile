@@ -6,4 +6,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 # RUN chmod -R 777 ./
-CMD ["celery", "-A", "tasks", "worker", "-l", "info"]
+CMD ["""celery", "-A", "tasks", "worker", "-l", "info"""]

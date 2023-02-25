@@ -5,7 +5,7 @@ from py_func import start as start_py
 from db.db_functions import drop_results_table, drop_table_Words
 
 
-app = Celery('tasks', backend='redis://redis:6379/', broker='redis://redis:6379/')
+app = Celery('tasks', backend='redis://localhost:6379', broker='redis://localhost:6379')
 
 
 @app.task()
