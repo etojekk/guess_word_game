@@ -15,7 +15,7 @@ services:
       dockerfile: backend.Dockerfile
     # container_name: words_game
     depends_on:
-      - celery
+      # - celery
       - postgres
       - redis
     networks:
@@ -29,23 +29,23 @@ services:
     volumes:
         - ./go_app:/go_app/data
 
-  celery:
-      image: celery:latest
-      build:
-        context: .
-        dockerfile: celery.Dockerfile
-      container_name: celery_app
-      restart: always
-      depends_on:
-        - redis
-        - postgres
-      networks:
-        - backend
-      # ports:
-      # - 8000:8000
-      volumes:
-        - ./go_app:/go_app/celery
-      # command: celery -A tasks worker -l info
+  # celery:
+  #     image: celery:latest
+  #     build:
+  #       context: .
+  #       dockerfile: celery.Dockerfile
+  #     container_name: celery_app
+  #     restart: always
+  #     depends_on:
+  #       - redis
+  #       - postgres
+  #     networks:
+  #       - backend
+  #     # ports:
+  #     # - 8000:8000
+  #     volumes:
+  #       - ./go_app:/go_app/celery
+  #     # command: celery -A tasks worker -l info
 
   postgres:
     container_name: postgres
